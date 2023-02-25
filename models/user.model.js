@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     designation: {
         type: String,
         required: true
+    },
+    file: {
+        data: Buffer,
+        contentType: String
     }
 
 })
