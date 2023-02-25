@@ -5,6 +5,8 @@ const cookieParse = require("cookie-parser");
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const mongodbStore = require('connect-mongodb-session')(session)
+const cors = require('cors')
+const multer = require('multer')
 
 require("dotenv").config();
 require("./db/conn");
@@ -20,6 +22,28 @@ const store = new mongodbStore({
     uri: process.env.MONGO_URI,
     collection: 'sessions'
 })
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'static/uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+})
+
+let upload = multer({ 
+    storage: storage,
+    limits: {fileSize: 1000000},
+    fileFilter: function (req, file, cb) {
+        checkFileType(file, cb)
+    }
+}).single('file')
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 
 app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: false, store: store, cookie: {maxAge: 12 * 60 * 60 * 1000}}))
 
