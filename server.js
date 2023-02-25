@@ -41,7 +41,7 @@ let upload = multer({
 }).single('file')
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: '*',
     credentials: true
 }))
 
