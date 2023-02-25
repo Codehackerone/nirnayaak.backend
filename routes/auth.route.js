@@ -19,7 +19,7 @@ route.get('/fetch/:id', getDocument)
 
 
 route.post('/delete', (req, res) => {
-    User.delete({})
+    User.deleteMany({})
     .then((user) => {
         if(!user) {
             return res.status(404).send('error')
