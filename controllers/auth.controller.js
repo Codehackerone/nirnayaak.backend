@@ -52,7 +52,7 @@ const postRegister = (req, res, next) => {
             const client = require('twilio')(accountSid, authToken);
             client.messages
             .create({
-            body: "Congratulations! You've been verified",
+            body: "Congratulations from NirNayaak! Your account has been verified",
             from: `+${process.env.TWILIO_PHONE_NUMBER}`,
             to: `+91${mobile}`
         } )
