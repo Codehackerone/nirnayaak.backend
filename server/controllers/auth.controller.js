@@ -1,39 +1,50 @@
 const User = require('../models/user.model')
-
-const getLoginPage = (req, res) => {
-    res.render('index.ejs')
-}
+const fs = require('fs')
+const path = require('path')
 
 const postLogin = (req, res) => {
-   
-    let check = req.body.type;
+    let email = req.body.email
+    let password = req.body.password
 
-    if(check == 'login'){
-        User.findOne({email: req.body.email})
-        .then((data) => {
-            if(!data){
-                res.send('User not found')
-            }else{
-                console.log(data);
-                res.send('logged in')
+    User.findOne({ email, password })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send('user not found')
             }
+            res.status(200).send(user)
         })
-    }else{
-        let user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-            })
-            
-            user.save(function (err, user) {
-            if (err) { return res.send(err) }
-            res.status(201).json(user)
-            })
-    }
 }
 
+const postRegister = (req, res, next) => {
+    let name = req.body.name
+    let password = req.body.password
+    let licenseID = req.body.licenseID
+    let email = req.body.email
+    let designation = req.body.designation
+    
+
+    let user = new User({
+        licenseID,
+        name,
+        email,
+        password,
+        designation,
+    })
+
+console.log(user);
+
+    user.save()
+        .then((user) => {
+            if(!user) {
+                return res.status(404).send('error')
+            }
+
+            res.status(200).send(user)
+        })
+
+}
 
 module.exports = {
-    getLoginPage,
-    postLogin
+    postLogin,
+    postRegister
 }

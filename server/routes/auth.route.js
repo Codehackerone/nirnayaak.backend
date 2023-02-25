@@ -1,12 +1,23 @@
 const express = require('express');
 const route = new express.Router()
 
-const {getLoginPage} = require('../controllers/auth.controller')
+
 const {postLogin} = require('../controllers/auth.controller')
-const auth = require('../middleware/auth')
+const {postRegister} = require('../controllers/auth.controller')
 
-route.get('/login', getLoginPage)
+const auth = require('../middleware/auth');
+const User = require('../models/user.model');
+
+route.post('/register', postRegister)
 route.post('/login', postLogin)
-
+route.post('/delete', (req, res) => {
+    User.findOneAndDelete({email: req.body.email})
+    .then((user) => {
+        if(!user) {
+            return res.status(404).send('error')
+        }
+        res.status(200).send('deleted')
+    })
+})
 
 module.exports = route
