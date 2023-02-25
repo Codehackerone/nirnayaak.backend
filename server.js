@@ -23,23 +23,6 @@ const store = new mongodbStore({
     collection: 'sessions'
 })
 
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'static/uploads')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
-})
-
-let upload = multer({ 
-    storage: storage,
-    limits: {fileSize: 1000000},
-    fileFilter: function (req, file, cb) {
-        checkFileType(file, cb)
-    }
-}).single('file')
-
 app.use(cors({
     origin: '*',
     credentials: true
