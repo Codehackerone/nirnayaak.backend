@@ -22,12 +22,12 @@ const postRegister = (req, res, next) => {
     let email = req.body.email
     let designation = req.body.designation
     
-    var img = fs.readFileSync(req.file.path);
-    var encode_img = img.toString('base64');
-    var final_img = {
-        contentType:req.file.mimetype,
-        image:new Buffer(encode_img,'base64')
-    };
+    // var img = fs.readFileSync(req.file.path);
+    // var encode_img = img.toString('base64');
+    // var final_img = {
+    //     contentType:req.file.mimetype,
+    //     image:new Buffer(encode_img,'base64')
+    // };
 
     let user = new User({
         licenseID,
@@ -35,7 +35,7 @@ const postRegister = (req, res, next) => {
         email,
         password,
         designation,
-        file: final_img
+        // file: final_img
     })
 
     user.save()
@@ -50,7 +50,7 @@ const postRegister = (req, res, next) => {
 }
 
 const getDocument = (req, res) => {
-    console.log(req.params);
+
     User.findOne({licenseID: req.params.id})
     .then((user) => {
         if(!user) {
