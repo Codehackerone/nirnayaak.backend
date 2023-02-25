@@ -13,7 +13,7 @@ const User = require('../models/user.model');
 
 
 
-route.post('/register', upload.single('file'), postRegister)
+route.post('/register', postRegister)
 route.post('/login', postLogin)
 route.get('/fetch/:id', getDocument)
 
