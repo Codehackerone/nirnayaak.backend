@@ -26,7 +26,12 @@ const userSchema = new mongoose.Schema({
     file: {
         data: Buffer,
         contentType: String
+    },
+    verified: {
+        type: Boolean,
+        default: false
     }
+    
 
 })
 
