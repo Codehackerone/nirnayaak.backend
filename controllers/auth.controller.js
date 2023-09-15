@@ -34,32 +34,35 @@ const postRegister = (req, res, next) => {
         //     image:new Buffer(encode_img,'base64')
         // };
         
-        let user = new User({
-            licenseID,
-            name,
-            mobile,
-            password,
-            designation,
-            // file: final_img
-        })
-        
-        user.save()
-        .then((user) => {
-            if(!user) {
-                return res.status(404).send('error')
-            }
-        const sendSms = () => {
-            const client = require('twilio')(accountSid, authToken);
-            client.messages
-            .create({
-            body: "Congratulations from NirNayaak! Your account has been verified",
-            from: `+${process.env.TWILIO_PHONE_NUMBER}`,
-            to: `+91${mobile}`
-        } )
-        .then(message => console.log(message.sid))}
-        sendSms()   
-        res.status(200).send(user)
+    let user = new User({
+        licenseID,
+        name,
+        mobile,
+        password,
+        designation,
+        // file: final_img
     })
+    
+    user.save()
+    .then((user) => {
+        if(!user) {
+            return res.status(404).send('error')
+        }
+        // const sendSms = () => {
+        //     const client = require('twilio')(accountSid, authToken);
+        //     client.messages
+        //     .create({
+        //     body: "Congratulations from NirNayaak! Your account has been verified",
+        //     from: `+${process.env.TWILIO_PHONE_NUMBER}`,
+        //     to: `+91${mobile}`
+        // } )
+        // .then(message => console.log(message.sid))}
+        // sendSms()   
+        res.status(200).send(user)
+        })
+        .catch((err) => {
+            return res.status(404).send('error: '+err)
+        })
 
 }
 
